@@ -1,9 +1,10 @@
 import java.io.IOException;
 import org.apache.hadoop.io.Text;
+import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.mapreduce.Reducer;
 
 public class YellowTaxiPreprocessReducer
-        extends Reducer<Text, Text, Text, Text> {
+        extends Reducer<Text, Text, NullWritable, Text> {
 
     @Override
     public void reduce(Text key, Iterable<Text> values, Context context)
@@ -12,13 +13,10 @@ public class YellowTaxiPreprocessReducer
         // reducer to combine all records
         StringBuilder combinedOutput = new StringBuilder();
 
-        // Concatenate all values for this key
+        // each line has key, value pair
         for (Text value : values) {
-            combinedOutput.append(value.toString()).append("\n");
+            context.write(NullWritable.get(), new Text(key+ "," + value));
         }
-
-        // Write the combined output to the context
-        context.write(key, new Text(combinedOutput.toString()));
     }
 }
 

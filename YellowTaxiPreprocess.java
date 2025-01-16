@@ -24,14 +24,13 @@ public class YellowTaxiPreprocess{
             FileOutputFormat.setOutputPath(job, new Path(outputPathBase));
 
             job.setMapperClass(YellowTaxiPreprocessMapper.class);
-            job.setCombinerClass(YellowTaxiPreprocessReducer.class);
             job.setReducerClass(YellowTaxiPreprocessReducer.class);
 
             job.setOutputKeyClass(Text.class);
             job.setOutputValueClass(Text.class);
 
 
-            job.setNumReduceTasks(3);
+            job.setNumReduceTasks(1);
 
             // Wait for job completion
             boolean success = job.waitForCompletion(true);
